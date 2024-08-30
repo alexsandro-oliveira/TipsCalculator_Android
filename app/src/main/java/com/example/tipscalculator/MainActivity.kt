@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
                 val billWithTip = billTotal + totalTips
                 val totalPerPerson = billWithTip / nPeople
 
-                binding.tvResult.text = "$totalPerPerson"
+                binding.tvResult.text = "Total per Person: $$totalPerPerson"
             }
         }
 
