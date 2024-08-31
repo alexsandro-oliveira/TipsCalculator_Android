@@ -1,5 +1,6 @@
 package com.example.tipscalculator
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.RadioButton
@@ -10,6 +11,13 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.tipscalculator.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
+
+const val KEY_TOTAL_BILL = "MainActivity.KEY_TOTAL_BILL"
+const val KEY_TIP = "MainActivity.KEY_CHOSE_TIP"
+const val KEY_TOTAL_TIP = "MainActivity.KEY_TOTAL_TIP"
+const val KEY_PEOPLE = "MainActivity.KEY_N_PEOPLE"
+const val KEY_RESULT = "MainActivity.KEY_RESULT"
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -52,16 +60,23 @@ class MainActivity : AppCompatActivity() {
 
                 val billTotal: Float = billTotalTemp.toString().toFloat()
                 val nPeople: Int = nPeopleTemp.toString().toInt()
-                val totalTips = (billTotal * percentage) / 100
-                val billWithTip = billTotal + totalTips
-                val totalPerPerson = billWithTip / nPeople
+                val totalTips: Float = (billTotal * percentage) / 100
+                val billWithTip: Float = billTotal + totalTips
+                val totalPerPerson: Float = billWithTip / nPeople
 
-                binding.tvResult.text = "Total per Person: $$totalPerPerson"
+
+                val intent = Intent(this, SummaryActivity::class.java)
+                intent.putExtra(KEY_TOTAL_BILL, billTotal)
+                intent.putExtra(KEY_TIP, percentage)
+                intent.putExtra(KEY_TOTAL_TIP, totalTips)
+                intent.putExtra(KEY_PEOPLE, nPeople)
+                intent.putExtra(KEY_RESULT, totalPerPerson)
+
+                startActivity(intent)
             }
         }
 
         binding.btnClear.setOnClickListener {
-            binding.tvResult.text = ""
             binding.rbOpt1.isChecked = false
             binding.rbOpt2.isChecked = false
             binding.rbOpt3.isChecked = false
