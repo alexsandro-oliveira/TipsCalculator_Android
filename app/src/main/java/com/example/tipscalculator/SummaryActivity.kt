@@ -14,34 +14,27 @@ import java.util.Locale
 
 class SummaryActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivitySummaryBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_summary)
+        binding = ActivitySummaryBinding.inflate((layoutInflater))
+        setContentView(binding.root)
 
-        val totalBill = intent.getFloatExtra(KEY_TOTAL_BILL, 0f)
-        val choseTip = intent.getIntExtra(KEY_TIP, 0)
-        val totalTip = intent.getFloatExtra(KEY_TOTAL_TIP, 0f)
-        val nPeople = intent.getIntExtra(KEY_PEOPLE, 0)
-        val resultCalc = intent.getFloatExtra(KEY_RESULT, 0f)
+        val totalBill = intent.getFloatExtra("billTotal", 0.0f)
+        val choseTip = intent.getIntExtra("percentage", 0)
+        val totalTip = intent.getFloatExtra("totalTips", 0.0f)
+        val nPeople = intent.getIntExtra("nPeople", 0)
+        val resultCalc = intent.getFloatExtra("totalPerPerson", 0.0f)
 
-        val result: TextView = findViewById(R.id.tv_result)
-        val billResult: TextView = findViewById(R.id.tv_billResult)
-        val tipResult: TextView = findViewById(R.id.tv_tipResult)
-        val tipTotal: TextView = findViewById(R.id.tv_tipTotalResult)
-        val people: TextView = findViewById(R.id.tv_nPeopleResult)
+        binding.tvResult.text = "$ %.2f".format(resultCalc)
+        binding.tvBillResult.text = "$ %.2f".format(totalBill)
+        binding.tvTipResult.text = "$choseTip%"
+        binding.tvTipTotalResult.text = "$ %.2f".format(totalTip)
+        binding.tvNPeopleResult.text = nPeople.toString()
 
-        result.text = "$ %.2f".format(resultCalc)
-        billResult.text = "$ %.2f".format(totalBill)
-        tipResult.text = choseTip.toString()+"%"
-        tipTotal.text = "$ %.2f".format(totalTip)
-        people.text = nPeople.toString()
-
-        val btnNew: Button = findViewById(R.id.btn_new)
-
-        btnNew.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+        binding.btnRefresh.setOnClickListener {
+            finish()
         }
 
     }
